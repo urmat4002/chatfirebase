@@ -9,55 +9,30 @@ import {useAuthState} from 'react-firebase-hooks/auth'
 import {Users} from '../Components/Users'
 import {Chats} from '../Components/Chats'
 import {ChatList} from '../Components/ChatList'
+import {useDispatch, useSelector} from 'react-redux'
+import {setCurrentComponent} from '../store/slice'
 
 export const Chat = () => {
-  const [chats, setChats] = useState(false)
-  const chat = useRef(null)
-  const [value, setValue] = useState('')
+  const dispatch = useDispatch()
+  const currentComponent = useSelector((state) => state.chat.currentComponent)
+  const currentChat = useSelector((state) => state.chat.currentChat)
 
   const db = getFirestore(app)
   const auth = getAuth()
   const [user] = useAuthState(auth)
   const [messages, loading] = useCollectionData(collection(db, 'cities'))
 
-  messages && messages.sort((a, b) => a.date - b.date)
+  //messages && messages.sort((a, b) => a.date - b.date)
 
   ////////////////////////////////////////////
-  chat.current && (chat.current.scrollTop = chat.current.scrollHeight)
-  /////////////////////////////////////////
-
-  useEffect(() => {
-    setTimeout(() => {
-      chat.current.scrollTop = chat.current.scrollHeight
-    }, 1000)
-  }, [chat])
 
   //////////////////////////////////////////////////
-
-  const modify = async () => {
-    messages[0].dialog1.push({
-      text: value,
-      date: Date.now(),
-      avatar: 'hi',
-      email: user.email,
-      uid: user.uid,
-    })
-    const temp = messages[0].dialog1
-    console.log(temp)
-    await setDoc(doc(db, 'cities', 'LA'), {
-      dialog1: temp,
-    })
-
-    setValue('')
-    chat.current && (chat.current.scrollTop = chat.current.scrollHeight)
-  }
 
   ///////////////////////////////////////////////////////////////////
 
   const writeDatabase = async () => {
     try {
       const docRef = await addDoc(collection(db, 'messages'), {
-        text: value,
         date: Date.now(),
         avatar: 'hi',
         email: user.email,
@@ -67,8 +42,6 @@ export const Chat = () => {
     } catch (e) {
       console.error('Error adding document: ', e)
     }
-    setValue('')
-    chat.current && (chat.current.scrollTop = chat.current.scrollHeight)
   }
 
   ///////////////////////////////////////////////////////
@@ -77,44 +50,22 @@ export const Chat = () => {
     <Card style={{width: '300px', margin: '20px', padding: '10px'}}>
       <Card.Title>
         <div style={{display: 'flex', justifyContent: 'space-between'}}>
-          <div onClick={() => setChats(false)}>Chats</div>
-          <div>search</div>
+          <div onClick={() => dispatch(setCurrentComponent('chatList'))}>
+            Chats
+          </div>
+
+          <div onClick={() => dispatch(setCurrentComponent('usersList'))}>
+            search
+          </div>
         </div>
       </Card.Title>
       <Form>
-        <div
-          ref={chat}
-          style={{
-            overflow: 'auto',
-            height: '300px',
-            border: '1px solid silver',
-            borderRadius: '10px',
-            marginBottom: '10px',
-            padding: '5px',
-          }}
-        >
-          {chats ? <Chats /> : <ChatList setChats={setChats} />}
-        </div>
-        <Form.Control
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-        />
-
-        <Button style={{margin: '10px'}} onClick={modify}>
-          Send
-        </Button>
+        {
+          {chats: <Chats />, chatList: <ChatList />, usersList: <Users />}[
+            currentComponent
+          ]
+        }
       </Form>
     </Card>
   )
 }
-
-/*<p
-style={{
-  border: '1px solid silver',
-  borderRadius: '4px',
-  padding: '3px',
-  width: '170px',
-  marginLeft: user.uid === item.uid ? 'auto' : '5px',
-}}
-key={index}
-></p>*/
