@@ -15,7 +15,7 @@ export const NavBar = () => {
   return (
     <Navbar bg="dark" data-bs-theme="dark">
       <Container>
-        <Navbar.Brand>Chat</Navbar.Brand>
+        <Navbar.Brand>MobiChat</Navbar.Brand>
 
         {user ? (
           <div
