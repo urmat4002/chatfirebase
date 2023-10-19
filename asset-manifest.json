@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/chatfirebase/static/css/main.073c9b0a.css",
-    "main.js": "/chatfirebase/static/js/main.36b20aef.js",
+    "main.js": "/chatfirebase/static/js/main.097bd5e7.js",
     "static/js/787.5321f4d1.chunk.js": "/chatfirebase/static/js/787.5321f4d1.chunk.js",
     "index.html": "/chatfirebase/index.html",
     "main.073c9b0a.css.map": "/chatfirebase/static/css/main.073c9b0a.css.map",
-    "main.36b20aef.js.map": "/chatfirebase/static/js/main.36b20aef.js.map",
+    "main.097bd5e7.js.map": "/chatfirebase/static/js/main.097bd5e7.js.map",
     "787.5321f4d1.chunk.js.map": "/chatfirebase/static/js/787.5321f4d1.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",
-    "static/js/main.36b20aef.js"
+    "static/js/main.097bd5e7.js"
   ]
 }
